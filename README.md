@@ -38,7 +38,7 @@ ionic serve
 ## Configurar Firebase y Remote Config
 
 1. Crear un proyecto en [Firebase Console](https://console.firebase.google.com) y registrar una app web.
-2. Copiar la configuración en `src/environments/environment.ts` y `environment.prod.ts` (hoy tienen `REEMPLAZAR`).
+2. Copiar la configuración de la app web en `src/environments/environment.ts` y `environment.prod.ts`.
 3. En **Remote Config** crear el parámetro `categories` (Boolean) con valor `true` y publicar.
 4. Demostración: poner `categories` en `false`, publicar y reabrir la app. Se ocultan el selector de categoría, el filtro y el acceso a Categorías; la ruta `/categories` redirige a `/home`.
 
