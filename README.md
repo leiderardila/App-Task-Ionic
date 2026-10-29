@@ -1,4 +1,4 @@
-# Prueba Todo — Ionic + Angular
+# App Task — Ionic + Angular
 
 Lista de tareas con categorías, Firebase Remote Config (feature flag) y soporte para Android e iOS con Capacitor.
 
