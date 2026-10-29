@@ -11,6 +11,26 @@ import { TaskService } from '../../core/services/task.service';
   template: `
     <ion-header><ion-toolbar color="primary"><ion-title>Inicio</ion-title></ion-toolbar></ion-header>
     <ion-content>
+      <div class="container py-3">
+        <div class="row g-3">
+          <div class="col-6">
+            <div class="card shadow-sm text-center h-100">
+              <div class="card-body">
+                <div class="display-6 fw-bold text-primary">{{ taskService.pending().length }}</div>
+                <small class="text-secondary">Pendientes</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card shadow-sm text-center h-100">
+              <div class="card-body">
+                <div class="display-6 fw-bold text-success">{{ taskService.tasks().length - taskService.pending().length }}</div>
+                <small class="text-secondary">Completadas</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <ion-list>
         <ion-item routerLink="/tasks" detail>
           <ion-label>Tareas</ion-label>
