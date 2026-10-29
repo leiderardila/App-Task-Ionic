@@ -1,0 +1,50 @@
+name: iOS IPA (sin firma)
+
+# Ejecución manual: Actions > "iOS IPA (sin firma)" > Run workflow
+on:
+  workflow_dispatch:
+
+jobs:
+  build-ipa:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Compilar la app web
+        run: npx ng build
+
+      - name: Sincronizar Capacitor (iOS)
+        run: npx cap sync ios
+
+      - name: Archivar sin firma
+        run: |
+          xcodebuild archive \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -configuration Release \
+            -sdk iphoneos \
+            -archivePath "$RUNNER_TEMP/App.xcarchive" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY=""
+
+      - name: Empaquetar el .ipa
+        run: |
+          APP_PATH=$(find "$RUNNER_TEMP/App.xcarchive/Products/Applications" -maxdepth 1 -name "*.app" | head -n 1)
+          mkdir -p "$RUNNER_TEMP/ipa/Payload"
+          cp -R "$APP_PATH" "$RUNNER_TEMP/ipa/Payload/"
+          (cd "$RUNNER_TEMP/ipa" && zip -qry "$GITHUB_WORKSPACE/App-unsigned.ipa" Payload)
+          ls -lh App-unsigned.ipa
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: App-unsigned-ipa
+          path: App-unsigned.ipa
