@@ -66,3 +66,32 @@ npx cap open ios         # abre Xcode
 - Componentes `OnPush` y estado con signals.
 - Mapa id → nombre de categoría (`computed`) para evitar búsquedas por cada tarea renderizada.
 - Inicio no bloqueante: Remote Config tiene un tope de 3 s.
+
+## Preguntas de la prueba
+
+### ¿Cuáles fueron los principales desafíos al implementar las nuevas funcionalidades?
+
+- **Compatibilidad de versiones:** `@angular/fire` 21 solo admite Angular 21 y TypeScript menor que 6, mientras que la plantilla de Ionic trae Angular 22. Se resolvió usando el SDK `firebase` directamente, que no depende de la versión de Angular.
+- **Almacenamiento asíncrono:** `@capacitor/preferences` es asíncrono, por lo que los servicios arrancan con una lista vacía y cargan los datos en segundo plano. Además, `Date` se serializa como texto en JSON y se restaura al leer.
+- **Feature flag sin bloquear el inicio:** Remote Config requiere red. Se carga al arrancar con un tope de 3 s y con valores por defecto, para que la app funcione aunque Firebase falle.
+- **Integridad de datos:** al eliminar una categoría, sus tareas quedaban apuntando a un id inexistente. Ahora quedan sin categoría.
+- **Herramientas de compilación:** Angular CLI 22 exige Node 22.22.3 o superior, y Capacitor 8 exige JDK 21 para compilar Android.
+
+### ¿Qué técnicas de optimización de rendimiento aplicaste y por qué?
+
+- **Virtual scroll** (`@angular/cdk`): con miles de tareas solo se renderizan las visibles, lo que reduce el DOM y la memoria.
+- **Carga diferida de páginas** (`loadComponent`): reduce el tamaño del bundle inicial y acelera el arranque.
+- **`ChangeDetectionStrategy.OnPush` y signals:** Angular solo revisa los componentes cuyos datos cambian.
+- **`computed` con un mapa id → nombre de categoría:** evita buscar la categoría por cada tarea renderizada.
+- **`trackBy`:** reutiliza los elementos del DOM al filtrar o modificar la lista.
+- **Inicio con tope de 3 s para Remote Config:** una red lenta no retrasa la pantalla inicial.
+
+### ¿Cómo aseguraste la calidad y mantenibilidad del código?
+
+- **Estructura por responsabilidad:** `core` (modelos y servicios), `pages` y `shared/components`.
+- **Componentes standalone, pequeños y reutilizables** (`task-card`, `category-filter`, `empty-state`).
+- **Lógica fuera de los componentes:** el acceso a datos, el almacenamiento y los feature flags viven en servicios inyectables.
+- **Tipado estricto de TypeScript:** el proyecto compila sin errores con `ng build`.
+- **Un único punto de acceso a los flags:** `FeatureFlagService` centraliza los valores por defecto y Remote Config.
+- **Comentarios en las decisiones no obvias** y commits pequeños y descriptivos.
+- **Pendiente:** no se escribieron pruebas unitarias propias; el proyecto trae la configuración de Vitest y Playwright lista para añadirlas.
