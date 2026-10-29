@@ -66,7 +66,3 @@ npx cap open ios         # abre Xcode
 - Componentes `OnPush` y estado con signals.
 - Mapa id → nombre de categoría (`computed`) para evitar búsquedas por cada tarea renderizada.
 - Inicio no bloqueante: Remote Config tiene un tope de 3 s.
-
-## Preguntas de la prueba
-
-Pendiente de completar.
