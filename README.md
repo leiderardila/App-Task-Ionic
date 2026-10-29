@@ -61,6 +61,15 @@ npx cap open ios         # abre Xcode
 - **IPA:** en Xcode, *Product > Archive*, y luego *Distribute App* (requiere cuenta de Apple Developer y firma).
 - Sin Mac, el IPA puede generarse con un servicio en la nube (Codemagic, MacStadium, etc.).
 
+### IPA sin firma con GitHub Actions
+
+El flujo [`.github/workflows/ios.yml`](.github/workflows/ios.yml) genera el IPA en un Mac de GitHub, sin necesidad de un Mac propio ni de una cuenta de Apple Developer:
+
+1. En GitHub: **Actions > iOS IPA (sin firma) > Run workflow**.
+2. Al terminar, descargar el artefacto **App-unsigned-ipa** (contiene `App-unsigned.ipa`).
+
+> **Importante:** el IPA es **sin firma**, por lo que no se instala directamente en un iPhone. Para instalarlo hay que firmarlo con un certificado y un provisioning profile de Apple Developer, o compilar desde Xcode con una cuenta de Apple.
+
 ## Optimización de rendimiento
 
 - Páginas con carga diferida (`loadComponent`) y precarga de rutas.
