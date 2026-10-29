@@ -46,6 +46,8 @@ Si Firebase no responde o no está configurado, la app usa el valor por defecto 
 
 ## Compilar para Android e iOS (Capacitor)
 
+> **Capacitor en lugar de Cordova:** la prueba menciona Cordova, pero se usó Capacitor, su sucesor oficial en Ionic. Cumple el mismo objetivo (empaquetar la app web como app nativa para Android e iOS), tiene mantenimiento activo y ya lo usan los plugins del proyecto (`@capacitor/preferences`). Los proyectos nativos quedan en `android/` e `ios/` y se abren con Android Studio y Xcode.
+
 ```bash
 ionic build
 npx cap add android      # solo la primera vez
