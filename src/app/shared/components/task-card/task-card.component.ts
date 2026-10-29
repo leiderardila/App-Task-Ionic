@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { IonBadge, IonButton, IonCheckbox, IonIcon, IonItem, IonLabel } from '@ionic/angular';
+import { IonButton, IonCheckbox, IonIcon, IonItem, IonLabel } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { trashOutline } from 'ionicons/icons';
 import { Task } from '../../../core/models/task.model';
@@ -9,7 +9,7 @@ export const TASK_CARD_HEIGHT = 72;
 
 @Component({
   selector: 'app-task-card',
-  imports: [IonItem, IonCheckbox, IonLabel, IonBadge, IonButton, IonIcon],
+  imports: [IonItem, IonCheckbox, IonLabel, IonButton, IonIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { style: `display:block;height:${TASK_CARD_HEIGHT}px` },
   template: `
@@ -18,7 +18,7 @@ export const TASK_CARD_HEIGHT = 72;
       <ion-label [style.text-decoration]="task().completed ? 'line-through' : 'none'">
         <h2>{{ task().title }}</h2>
         @if (categoryName()) {
-          <ion-badge color="primary">{{ categoryName() }}</ion-badge>
+          <span class="badge rounded-pill text-bg-primary">{{ categoryName() }}</span>
         }
       </ion-label>
       <ion-button slot="end" fill="clear" color="danger" aria-label="Eliminar tarea" (click)="removed.emit(task().id)">

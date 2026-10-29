@@ -24,13 +24,21 @@ import { EmptyStateComponent } from '../../shared/components/empty-state/empty-s
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <ion-item>
-        <ion-input #name placeholder="Nueva categoría" (keyup.enter)="add(name)" />
-        <ion-button slot="end" aria-label="Agregar categoría" (click)="add(name)">
-          <ion-icon slot="icon-only" name="add" />
-        </ion-button>
-      </ion-item>
-      <ion-list>
+      <div class="container py-3">
+        <div class="d-flex align-items-center justify-content-between mb-2">
+          <h2 class="h6 text-secondary mb-0">Mis categorías</h2>
+          <span class="badge rounded-pill text-bg-secondary">{{ categoryService.categories().length }}</span>
+        </div>
+        <div class="card shadow-sm overflow-hidden">
+          <ion-item lines="full">
+            <ion-input #name placeholder="Nueva categoría" (keyup.enter)="add(name)" />
+            <ion-button slot="end" aria-label="Agregar categoría" (click)="add(name)">
+              <ion-icon slot="icon-only" name="add" />
+            </ion-button>
+          </ion-item>
+        </div>
+      </div>
+      <ion-list class="mx-3 rounded overflow-hidden shadow-sm">
         @for (c of categoryService.categories(); track c.id) {
           <ion-item>
             <ion-label>{{ c.name }}</ion-label>
